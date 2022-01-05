@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.Objects;
 
 public class MainUiFacade {
+    public static final String IMAGE_DIRECTORY = "images/";
+
     private StackPane stackPane;
     private ImageView skyImageView;
     private ImageView landImageView;
@@ -44,8 +46,8 @@ public class MainUiFacade {
         String skyImageName = env.getSky().getImageName();
         String landImageName = env.getLand().getImageName();
         try {
-            skyImageView.setImage(new Image(Objects.requireNonNull(HelloApplication.class.getResource(skyImageName)).toURI().toString()));
-            landImageView.setImage(new Image(Objects.requireNonNull(HelloApplication.class.getResource(landImageName)).toURI().toString()));
+            skyImageView.setImage(new Image(Objects.requireNonNull(HelloApplication.class.getResource(IMAGE_DIRECTORY + skyImageName)).toURI().toString()));
+            landImageView.setImage(new Image(Objects.requireNonNull(HelloApplication.class.getResource(IMAGE_DIRECTORY + landImageName)).toURI().toString()));
         } catch (Exception e) {
             e.printStackTrace();
         }
