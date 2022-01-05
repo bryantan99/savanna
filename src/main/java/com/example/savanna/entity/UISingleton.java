@@ -1,5 +1,7 @@
 package com.example.savanna.entity;
 
+import com.example.savanna.environment.EnvironmentSingleton;
+
 public class UISingleton {
 
     private UISingleton uniqueInstance;

@@ -1,4 +1,4 @@
-package com.example.savanna.entity;
+package com.example.savanna.environment;
 
 public class Land {
     private String imageName;

@@ -1,11 +1,22 @@
-package com.example.savanna.entity;
+package com.example.savanna.animal;
+
+import java.util.Random;
 
 public class Animal {
     private Integer animalId;
     private Integer size;
     private String image;
-    private Integer positionX;
-    private Integer positionY;
+    private Double positionX;
+    private Double positionY;
+
+    public Animal (String image) {
+        Random r = new Random();
+        this.animalId = null;
+        this.size = 150;
+        this.image = image;
+        this.positionX = (double) r.nextInt(700);
+        this.positionY = (double) r.nextInt(160);
+    }
 
     public Integer getAnimalId() {
         return animalId;
@@ -31,19 +42,19 @@ public class Animal {
         this.image = image;
     }
 
-    public Integer getPositionX() {
+    public Double getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(Integer positionX) {
+    public void setPositionX(Double positionX) {
         this.positionX = positionX;
     }
 
-    public Integer getPositionY() {
+    public Double getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(Integer positionY) {
+    public void setPositionY(Double positionY) {
         this.positionY = positionY;
     }
 }

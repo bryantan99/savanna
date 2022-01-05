@@ -1,5 +1,7 @@
-package com.example.savanna.entity;
+package com.example.savanna.environment;
 
+import com.example.savanna.animal.Animal;
+import com.example.savanna.animal.AnimalFactory;
 import com.example.savanna.util.Constant;
 
 import java.util.ArrayList;
@@ -21,8 +23,16 @@ public class EnvironmentSingleton {
         this.animalList = new ArrayList<>();
     }
 
-    public void addAnimal(String type) {
-
+    public Animal addAnimal(String type) {
+        AnimalFactory factory = new AnimalFactory();
+        Animal animal = factory.createAnimal(type);
+        if (animal != null) {
+            animalList.add(animal);
+        }
+        if (animalList != null) {
+            System.out.println("Current animal list : " + animalList.size());
+        }
+        return animal;
     }
 
     public void removeAnimal(Integer animalId) {
