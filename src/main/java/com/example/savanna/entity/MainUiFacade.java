@@ -21,7 +21,6 @@ import java.util.Objects;
 public class MainUiFacade {
     public static final String IMAGE_DIRECTORY = "images/";
 
-    private AnchorPane viewScreen;
     private ImageView skyImageView;
     private ImageView landImageView;
     private EnvironmentSingleton env;
@@ -30,8 +29,7 @@ public class MainUiFacade {
     private ComboBox<String> animalDropdown;
     private Button addAnimalButton;
 
-    public MainUiFacade(AnchorPane viewScreen, ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton) {
-        this.viewScreen = viewScreen;
+    public MainUiFacade(ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton) {
         this.skyImageView = skyImageView;
         this.landImageView = landImageView;
         this.env = env;

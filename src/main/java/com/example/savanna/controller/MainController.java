@@ -61,7 +61,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         env = EnvironmentSingleton.getInstance();
-        mainUiFacade = new MainUiFacade(viewScreen, skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton);
+        mainUiFacade = new MainUiFacade(skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton);
         mainUiFacade.init();
     }
 
