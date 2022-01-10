@@ -2,11 +2,9 @@ package com.example.savanna.entity;
 
 import com.example.savanna.HelloApplication;
 import com.example.savanna.environment.EnvironmentSingleton;
+import com.example.savanna.model.AnimalForm;
 import com.example.savanna.util.Constant;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -14,9 +12,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MainUiFacade {
     public static final String IMAGE_DIRECTORY = "images/";
@@ -28,8 +24,12 @@ public class MainUiFacade {
     private Slider volumeSlider;
     private ComboBox<String> animalDropdown;
     private Button addAnimalButton;
+    private ComboBox<String> moveBehaviorDropdown;
+    private AnchorPane viewScreen;
+    private AnimalForm animalForm;
 
-    public MainUiFacade(AnchorPane viewScreen, ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton) {
+    public MainUiFacade(AnchorPane viewScreen, ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton, ComboBox<String> moveBehaviorDropdown, AnimalForm animalForm) {
+        this.viewScreen = viewScreen;
         this.skyImageView = skyImageView;
         this.landImageView = landImageView;
         this.env = env;
@@ -37,6 +37,8 @@ public class MainUiFacade {
         this.volumeSlider = volumeSlider;
         this.animalDropdown = animalDropdown;
         this.addAnimalButton = addAnimalButton;
+        this.moveBehaviorDropdown = moveBehaviorDropdown;
+        this.animalForm = animalForm;
     }
 
     public void init() {
@@ -45,6 +47,30 @@ public class MainUiFacade {
         initVolumeSlider();
         initAddAnimalButton();
         initAnimalDropdown();
+        initAnimalForm();
+        initMoveBehaviorDropdown(null);
+    }
+
+    private void initAnimalForm() {
+        animalForm.init();
+    }
+
+    public void initMoveBehaviorDropdown(String animalType) {
+        this.moveBehaviorDropdown.getItems().clear();
+        if (animalType == null || animalType.isEmpty()) {
+            this.moveBehaviorDropdown.getItems().add(Constant.NA);
+            return;
+        }
+
+        List<String> moveBehaviorList = new ArrayList<>();
+        moveBehaviorList.add(Constant.MOVE_BEHAVIOR_WALK);
+        if (Constant.FLYABLE_ANIMAL.contains(animalType)) {
+            moveBehaviorList.add(Constant.MOVE_BEHAVIOR_FLY);
+        }
+        Collections.sort(moveBehaviorList);
+        for (String mb : moveBehaviorList) {
+            this.moveBehaviorDropdown.getItems().add(mb);
+        }
     }
 
     private void initAddAnimalButton() {
@@ -86,6 +112,14 @@ public class MainUiFacade {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        skyImageView.setOnMouseClicked(mouseEvent -> {
+            initMoveBehaviorDropdown(null);
+            animalForm.reset();
+        });
+        landImageView.setOnMouseClicked(mouseEvent -> {
+            initMoveBehaviorDropdown(null);
+            animalForm.reset();
+        });
     }
 
     private void initVolumeSlider() {

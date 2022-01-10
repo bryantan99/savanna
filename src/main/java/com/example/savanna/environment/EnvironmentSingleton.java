@@ -85,4 +85,15 @@ public class EnvironmentSingleton {
     public void setAnimalList(List<Animal> animalList) {
         this.animalList = animalList;
     }
+
+    public Animal getAnimal(int animalId) {
+        if (animalList != null && !animalList.isEmpty()) {
+            for (Animal a : animalList) {
+                if (a.getAnimalId() == animalId) {
+                    return a;
+                }
+            }
+        }
+        return null;
+    }
 }

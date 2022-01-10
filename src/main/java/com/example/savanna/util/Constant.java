@@ -1,8 +1,12 @@
 package com.example.savanna.util;
 
 import com.example.savanna.animal.AnimalFactory;
+import com.example.savanna.animal.Eagle;
+import com.example.savanna.animal.Sparrow;
 
+import java.io.File;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Constant {
@@ -19,6 +23,14 @@ public class Constant {
     public static final String IMAGE_SPARROW = "sparrow.png";
     public static final String IMAGE_SPARROW_FLY = "sparrow-fly.png";
     public static final String IMAGE_ZEBRA = "zebra.png";
+
+    public static final String MOVE_BEHAVIOR_FLY= "FLY";
+    public static final String MOVE_BEHAVIOR_WALK= "WALK";
+    public static final String NA= "N/A";
+
+    public static final String FILE_SEPARATOR = File.separator;
+
+    public static final List<String> FLYABLE_ANIMAL = Arrays.asList(Sparrow.class.getSimpleName(), Eagle.class.getSimpleName());
 
     public static final List<String> ANIMAL_LIST = Arrays.asList(AnimalFactory.ZEBRA, AnimalFactory.GIRAFFE, AnimalFactory.LION, AnimalFactory.EAGLE, AnimalFactory.LEOPARD, AnimalFactory.OSTRICH, AnimalFactory.SPARROW);
     public static final double VIEWSCREEN_WIDTH = 852.0;

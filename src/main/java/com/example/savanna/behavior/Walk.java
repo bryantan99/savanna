@@ -4,8 +4,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-import java.util.Random;
-
 public class Walk implements MoveBehavior{
     private Pane container;
     private ImageView imageView;
@@ -15,10 +13,10 @@ public class Walk implements MoveBehavior{
         this.imageView = imageView;
     }
 
+    // ToDo Update left anchor and right anchor, replaced image with default image
     @Override
-    public void move() {
-        Random random = new Random();
-        AnchorPane.setLeftAnchor(imageView, random.nextDouble(700));
+    public void move(Double posX, Double posY) {
+        AnchorPane.setLeftAnchor(imageView, posX);
         String url = imageView.getImage().getUrl();
     }
 }

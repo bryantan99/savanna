@@ -7,7 +7,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.util.Objects;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,11 +20,11 @@ public class Fly implements MoveBehavior{
         this.imageView = imageView;
     }
 
+    // ToDo update Left Anchor & Right Anchor, replaced image with -fly image
     @Override
-    public void move() {
-        Random random = new Random();
-        AnchorPane.setLeftAnchor(imageView, random.nextDouble(700));
-        AnchorPane.setBottomAnchor(imageView, random.nextDouble(350));
+    public void move(Double posX, Double posY) {
+        AnchorPane.setLeftAnchor(imageView, posX);
+        AnchorPane.setBottomAnchor(imageView, posY);
 
         if(!isChanged){
             String url = imageView.getImage().getUrl();

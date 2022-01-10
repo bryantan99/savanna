@@ -4,27 +4,34 @@ import com.example.savanna.HelloApplication;
 import com.example.savanna.animal.Animal;
 import com.example.savanna.behavior.Fly;
 import com.example.savanna.behavior.Walk;
-import com.example.savanna.environment.EnvironmentSingleton;
 import com.example.savanna.entity.MainUiFacade;
+import com.example.savanna.environment.EnvironmentSingleton;
+import com.example.savanna.model.AnimalForm;
+import com.example.savanna.util.Constant;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -63,10 +70,42 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> animalDropdown;
 
+    private AnimalForm animalForm;
+
+    @FXML
+    private Text animalId;
+
+    @FXML
+    private Text animalType;
+
+    @FXML
+    private TextField animalSize;
+
+    @FXML
+    private TextField animalPositionX;
+
+    @FXML
+    private TextField animalPositionY;
+
+    @FXML
+    private ComboBox<String> animalMoveBehavior;
+
+    private ImageView selectedAnimalImageView;
+
+    @FXML
+    private Button updateAnimalButton;
+
+    @FXML
+    private Button deleteAnimalButton;
+
+    @FXML
+    private Text exportStatusMsg;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         env = EnvironmentSingleton.getInstance();
-        mainUiFacade = new MainUiFacade(viewScreen, skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton);
+        animalForm = new AnimalForm(animalId, animalType, animalSize, animalPositionX, animalPositionY, animalMoveBehavior, updateAnimalButton, deleteAnimalButton);
+        mainUiFacade = new MainUiFacade(viewScreen, skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton, animalMoveBehavior, animalForm);
         mainUiFacade.init();
     }
 
@@ -91,24 +130,59 @@ public class MainController implements Initializable {
             AnchorPane.setLeftAnchor(animalImageView, animal.getPositionX());
             AnchorPane.setBottomAnchor(animalImageView, animal.getPositionY());
 
-            animal.setMoveBehavior(animal.getFly() ? new Fly(viewScreen, animalImageView) : new Walk(viewScreen, animalImageView));
+            animal.setMoveBehavior(new Walk(viewScreen, animalImageView));
             animalImageView.setOnMouseClicked(event1 -> {
                 MouseButton button = event1.getButton();
-                switch(button) {
-                    case PRIMARY:
-                        animal.getMoveBehavior().move();
-                        break;
-                    case SECONDARY:
-                        env.removeAnimal(animal.getAnimalId());
-                        animalImageView.setImage(null);
-                        break;
-                    default:
-                        break;
+                if (button.equals(MouseButton.PRIMARY)) {
+                    selectedAnimalImageView = animalImageView;
+                    mainUiFacade.initMoveBehaviorDropdown(animal.getClass().getSimpleName());
+                    animalForm.patchValue(animal);
                 }
             });
         }
         animalDropdown.setPromptText("Select an animal");
         animalDropdown.setValue(null);
+    }
+
+    @FXML
+    protected void updateAnimal(ActionEvent event) {
+        Animal animal = env.getAnimal(Integer.parseInt(animalId.getText()));
+        if (animal != null) {
+            animal.setPositionX(Double.parseDouble(animalPositionX.getText()));
+            animal.setPositionY(Double.parseDouble(animalPositionY.getText()));
+            animal.setMoveBehavior(Constant.MOVE_BEHAVIOR_FLY.equals(animalMoveBehavior.getValue()) ? new Fly(viewScreen, selectedAnimalImageView) : new Walk(viewScreen, selectedAnimalImageView));
+            animal.setSize(Integer.parseInt(animalSize.getText()));
+
+            selectedAnimalImageView.setFitWidth(animal.getSize());
+            AnchorPane.setLeftAnchor(selectedAnimalImageView, animal.getPositionX());
+            AnchorPane.setBottomAnchor(selectedAnimalImageView, animal.getPositionY());
+        }
+    }
+
+    @FXML
+    protected void deleteAnimal(ActionEvent event) {
+        env.removeAnimal(Integer.parseInt(animalId.getText()));
+        viewScreen.getChildren().remove(selectedAnimalImageView);
+        mainUiFacade.initMoveBehaviorDropdown(null);
+        animalForm.reset();
+    }
+
+    @FXML
+    protected void exportImg(ActionEvent event) {
+        String directory = System.getProperty("user.home") + Constant.FILE_SEPARATOR + "Downloads" + Constant.FILE_SEPARATOR + "savanna.png";
+        WritableImage image = viewScreen.snapshot(new SnapshotParameters(), null);
+        File file = new File(directory);
+        boolean isSuccess = false;
+        try {
+            isSuccess = ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (isSuccess) {
+            exportStatusMsg.setText("An image (savanna.png) has been exported to " + directory + ".");
+        } else {
+            exportStatusMsg.setText("There's an error when exporting image.");
+        }
     }
 
 }

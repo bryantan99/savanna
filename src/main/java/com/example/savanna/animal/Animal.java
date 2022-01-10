@@ -1,6 +1,8 @@
 package com.example.savanna.animal;
 
+import com.example.savanna.behavior.Fly;
 import com.example.savanna.behavior.MoveBehavior;
+import com.example.savanna.behavior.Walk;
 
 import java.util.Random;
 

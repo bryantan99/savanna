@@ -1,5 +1,5 @@
 package com.example.savanna.behavior;
 
 public interface MoveBehavior {
-    void move();
+    void move(Double posX, Double posY);
 }
