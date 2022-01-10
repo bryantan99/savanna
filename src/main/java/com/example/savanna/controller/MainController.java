@@ -2,9 +2,12 @@ package com.example.savanna.controller;
 
 import com.example.savanna.HelloApplication;
 import com.example.savanna.animal.Animal;
+import com.example.savanna.behavior.Fly;
+import com.example.savanna.behavior.Walk;
 import com.example.savanna.environment.EnvironmentSingleton;
 import com.example.savanna.entity.MainUiFacade;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +19,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -61,7 +66,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         env = EnvironmentSingleton.getInstance();
-        mainUiFacade = new MainUiFacade(skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton);
+        mainUiFacade = new MainUiFacade(viewScreen, skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton);
         mainUiFacade.init();
     }
 
@@ -85,6 +90,22 @@ public class MainController implements Initializable {
             viewScreen.getChildren().add(animalImageView);
             AnchorPane.setLeftAnchor(animalImageView, animal.getPositionX());
             AnchorPane.setBottomAnchor(animalImageView, animal.getPositionY());
+
+            animal.setMoveBehavior(animal.getFly() ? new Fly(viewScreen, animalImageView) : new Walk(viewScreen, animalImageView));
+            animalImageView.setOnMouseClicked(event1 -> {
+                MouseButton button = event1.getButton();
+                switch(button) {
+                    case PRIMARY:
+                        animal.getMoveBehavior().move();
+                        break;
+                    case SECONDARY:
+                        env.removeAnimal(animal.getAnimalId());
+                        animalImageView.setImage(null);
+                        break;
+                    default:
+                        break;
+                }
+            });
         }
         animalDropdown.setPromptText("Select an animal");
         animalDropdown.setValue(null);

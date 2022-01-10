@@ -1,21 +1,25 @@
 package com.example.savanna.animal;
 
+import com.example.savanna.behavior.MoveBehavior;
+
 import java.util.Random;
 
 public class Animal {
+
     private Integer animalId;
     private Integer size;
     private String image;
     private Double positionX;
     private Double positionY;
+    private Boolean isFly;
+    private MoveBehavior moveBehavior;
 
-    public Animal (String image) {
+    public Animal(String image, Integer animalId) {
         Random r = new Random();
-        this.animalId = null;
+        this.animalId = animalId;
         this.size = 150;
         this.image = image;
         this.positionX = (double) r.nextInt(700);
-        this.positionY = (double) r.nextInt(160);
     }
 
     public Integer getAnimalId() {
@@ -56,5 +60,31 @@ public class Animal {
 
     public void setPositionY(Double positionY) {
         this.positionY = positionY;
+    }
+
+    public Boolean getFly() {
+        return isFly;
+    }
+
+    public void setFly(Boolean fly) {
+        isFly = fly;
+    }
+
+    public MoveBehavior getMoveBehavior() {
+        return moveBehavior;
+    }
+
+    public void setMoveBehavior(MoveBehavior moveBehavior) {
+        this.moveBehavior = moveBehavior;
+    }
+
+    public void adjustPositionYAccordingToIsFly() {
+        Random r = new Random();
+
+        if (isFly) {
+            this.positionY = (double) r.nextInt(350);
+        } else {
+            this.positionY = (double) r.nextInt(160);
+        }
     }
 }

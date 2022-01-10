@@ -29,7 +29,7 @@ public class MainUiFacade {
     private ComboBox<String> animalDropdown;
     private Button addAnimalButton;
 
-    public MainUiFacade(ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton) {
+    public MainUiFacade(AnchorPane viewScreen, ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton) {
         this.skyImageView = skyImageView;
         this.landImageView = landImageView;
         this.env = env;

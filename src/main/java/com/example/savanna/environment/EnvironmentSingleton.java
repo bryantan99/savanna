@@ -2,6 +2,9 @@ package com.example.savanna.environment;
 
 import com.example.savanna.animal.Animal;
 import com.example.savanna.animal.AnimalFactory;
+import com.example.savanna.command.AddCommand;
+import com.example.savanna.command.Command;
+import com.example.savanna.command.DeleteCommand;
 import com.example.savanna.util.Constant;
 
 import java.util.ArrayList;
@@ -12,42 +15,31 @@ public class EnvironmentSingleton {
     private Sky sky;
     private Land land;
     private String sound;
-    private boolean isRaining;
     private List<Animal> animalList;
+    private AnimalFactory factory;
+    private Command command;
+
+    private void init() {
+        factory = new AnimalFactory();
+    }
 
     private EnvironmentSingleton() {
         this.sky = new Sky(Constant.SKY_DEFAULT);
         this.land = new Land(Constant.LAND_DEFAULT);
         this.sound = Constant.BGM_DEFAULT;
-        this.isRaining = false;
         this.animalList = new ArrayList<>();
     }
 
     public Animal addAnimal(String type) {
-        AnimalFactory factory = new AnimalFactory();
         Animal animal = factory.createAnimal(type);
-        if (animal != null) {
-            animalList.add(animal);
-        }
-        if (animalList != null) {
-            System.out.println("Current animal list : " + animalList.size());
-        }
+        command = new AddCommand(animal);
+        command.execute();
         return animal;
     }
 
     public void removeAnimal(Integer animalId) {
-
-    }
-
-    public Animal getAnimal(Integer animalId) {
-        if (animalList != null && !animalList.isEmpty()) {
-            for (Animal a : animalList) {
-                if (a.getAnimalId().equals(animalId)) {
-                    return a;
-                }
-            }
-        }
-        return null;
+        command = new DeleteCommand(animalId);
+        command.execute();
     }
 
     public static EnvironmentSingleton getInstance() {
@@ -55,6 +47,7 @@ public class EnvironmentSingleton {
             synchronized (EnvironmentSingleton.class) {
                 if (uniqueInstance == null) {
                     uniqueInstance = new EnvironmentSingleton();
+                    uniqueInstance.init();
                 }
             }
         }
@@ -83,14 +76,6 @@ public class EnvironmentSingleton {
 
     public void setSound(String sound) {
         this.sound = sound;
-    }
-
-    public boolean isRaining() {
-        return isRaining;
-    }
-
-    public void setRaining(boolean raining) {
-        isRaining = raining;
     }
 
     public List<Animal> getAnimalList() {
