@@ -28,6 +28,9 @@ public class Constant {
     public static final String MOVE_BEHAVIOR_WALK= "WALK";
     public static final String NA= "N/A";
 
+    public static final String BOOLEAN_TRUE = "True";
+    public static final String BOOLEAN_FALSE = "False";
+    public static final List<String> BOOLEAN_DROPDOWN_LIST = Arrays.asList(BOOLEAN_TRUE, BOOLEAN_FALSE);
     public static final String FILE_SEPARATOR = File.separator;
 
     public static final List<String> FLYABLE_ANIMAL = Arrays.asList(Sparrow.class.getSimpleName(), Eagle.class.getSimpleName());

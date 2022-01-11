@@ -90,6 +90,9 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> animalMoveBehavior;
 
+    @FXML
+    private ComboBox<String> animalIsFlipped;
+
     private ImageView selectedAnimalImageView;
 
     @FXML
@@ -104,7 +107,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         env = EnvironmentSingleton.getInstance();
-        animalForm = new AnimalForm(animalId, animalType, animalSize, animalPositionX, animalPositionY, animalMoveBehavior, updateAnimalButton, deleteAnimalButton);
+        animalForm = new AnimalForm(animalId, animalType, animalSize, animalPositionX, animalPositionY, animalMoveBehavior, updateAnimalButton, deleteAnimalButton, animalIsFlipped);
         mainUiFacade = new MainUiFacade(viewScreen, skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton, animalMoveBehavior, animalForm);
         mainUiFacade.init();
     }
@@ -152,10 +155,12 @@ public class MainController implements Initializable {
             animal.setPositionY(Double.parseDouble(animalPositionY.getText()));
             animal.setMoveBehavior(Constant.MOVE_BEHAVIOR_FLY.equals(animalMoveBehavior.getValue()) ? new Fly(viewScreen, selectedAnimalImageView) : new Walk(viewScreen, selectedAnimalImageView));
             animal.setSize(Integer.parseInt(animalSize.getText()));
+            animal.setFlippedHorizontally(Constant.BOOLEAN_TRUE.equals(animalIsFlipped.getValue()));
 
             selectedAnimalImageView.setFitWidth(animal.getSize());
             AnchorPane.setLeftAnchor(selectedAnimalImageView, animal.getPositionX());
             AnchorPane.setBottomAnchor(selectedAnimalImageView, animal.getPositionY());
+            selectedAnimalImageView.setScaleX(animal.getFlippedHorizontally() ? -1 : 1);
         }
     }
 

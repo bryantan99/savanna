@@ -1,8 +1,6 @@
 package com.example.savanna.animal;
 
-import com.example.savanna.behavior.Fly;
 import com.example.savanna.behavior.MoveBehavior;
-import com.example.savanna.behavior.Walk;
 
 import java.util.Random;
 
@@ -13,6 +11,7 @@ public class Animal {
     private String image;
     private Double positionX;
     private Double positionY;
+    private Boolean isFlippedHorizontally;
     private Boolean isFly;
     private MoveBehavior moveBehavior;
 
@@ -22,6 +21,7 @@ public class Animal {
         this.size = 150;
         this.image = image;
         this.positionX = (double) r.nextInt(700);
+        this.isFlippedHorizontally = false;
     }
 
     public Integer getAnimalId() {
@@ -70,6 +70,14 @@ public class Animal {
 
     public void setFly(Boolean fly) {
         isFly = fly;
+    }
+
+    public Boolean getFlippedHorizontally() {
+        return isFlippedHorizontally;
+    }
+
+    public void setFlippedHorizontally(Boolean flippedVertically) {
+        isFlippedHorizontally = flippedVertically;
     }
 
     public MoveBehavior getMoveBehavior() {
