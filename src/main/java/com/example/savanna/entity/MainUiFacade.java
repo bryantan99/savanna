@@ -131,6 +131,8 @@ public class MainUiFacade {
         URL bgmUrl = HelloApplication.class.getResource(env.getSound());
         if (bgmUrl != null) {
             mediaPlayer = new MediaPlayer(new Media(bgmUrl.toString()));
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.setVolume(0.2);
             mediaPlayer.play();
         }
     }
