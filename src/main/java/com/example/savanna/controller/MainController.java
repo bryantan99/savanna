@@ -114,7 +114,7 @@ public class MainController implements Initializable {
 
     @FXML
     protected void switchToHelloView(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("view/hello-view.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("view/hello-view.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -158,8 +158,7 @@ public class MainController implements Initializable {
             animal.setFlippedHorizontally(Constant.BOOLEAN_TRUE.equals(animalIsFlipped.getValue()));
 
             selectedAnimalImageView.setFitWidth(animal.getSize());
-            AnchorPane.setLeftAnchor(selectedAnimalImageView, animal.getPositionX());
-            AnchorPane.setBottomAnchor(selectedAnimalImageView, animal.getPositionY());
+            animal.getMoveBehavior().move(animal.getPositionX(), animal.getPositionY());
             selectedAnimalImageView.setScaleX(animal.getFlippedHorizontally() ? -1 : 1);
         }
     }

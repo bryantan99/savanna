@@ -92,6 +92,7 @@ public class AnimalForm {
     }
 
     public void init() {
+        animalIsFlipped.getItems().clear();
         initIsFlippedDropdown();
         animalId.setText(Constant.NA);
         animalType.setText(Constant.NA);
