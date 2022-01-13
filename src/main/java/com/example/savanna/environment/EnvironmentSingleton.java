@@ -19,15 +19,12 @@ public class EnvironmentSingleton {
     private AnimalFactory factory;
     private Command command;
 
-    private void init() {
-        factory = new AnimalFactory();
-    }
-
     private EnvironmentSingleton() {
         this.sky = new Sky(Constant.SKY_DEFAULT);
         this.land = new Land(Constant.LAND_DEFAULT);
         this.sound = Constant.BGM_DEFAULT;
         this.animalList = new ArrayList<>();
+        this.factory = new AnimalFactory();
     }
 
     public Animal addAnimal(String type) {
@@ -47,7 +44,6 @@ public class EnvironmentSingleton {
             synchronized (EnvironmentSingleton.class) {
                 if (uniqueInstance == null) {
                     uniqueInstance = new EnvironmentSingleton();
-                    uniqueInstance.init();
                 }
             }
         }
