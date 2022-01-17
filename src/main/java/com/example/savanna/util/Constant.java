@@ -37,4 +37,5 @@ public class Constant {
 
     public static final List<String> ANIMAL_LIST = Arrays.asList(AnimalFactory.ZEBRA, AnimalFactory.GIRAFFE, AnimalFactory.LION, AnimalFactory.EAGLE, AnimalFactory.LEOPARD, AnimalFactory.OSTRICH, AnimalFactory.SPARROW);
     public static final double VIEWSCREEN_WIDTH = 852.0;
+    public static final double VIEWSCREEN_HEIGHT = 480.0;
 }

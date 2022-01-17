@@ -17,10 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -150,7 +147,11 @@ public class MainController implements Initializable {
     @FXML
     protected void updateAnimal(ActionEvent event) {
         Animal animal = env.getAnimal(Integer.parseInt(animalId.getText()));
-        if (animal != null) {
+
+        double width_ratio = selectedAnimalImageView.getImage().getWidth() / Double.parseDouble(animalSize.getText());
+        boolean isValid = validateFormValues(Double.parseDouble(animalPositionX.getText()), Double.parseDouble(animalPositionY.getText()),
+                selectedAnimalImageView.getImage().getWidth() / width_ratio, selectedAnimalImageView.getImage().getHeight() / width_ratio);
+        if (animal != null && isValid) {
             animal.setPositionX(Double.parseDouble(animalPositionX.getText()));
             animal.setPositionY(Double.parseDouble(animalPositionY.getText()));
             animal.setMoveBehavior(Constant.MOVE_BEHAVIOR_FLY.equals(animalMoveBehavior.getValue()) ? new Fly(viewScreen, selectedAnimalImageView) : new Walk(viewScreen, selectedAnimalImageView));
@@ -161,6 +162,66 @@ public class MainController implements Initializable {
             animal.getMoveBehavior().move(animal.getPositionX(), animal.getPositionY());
             selectedAnimalImageView.setScaleX(animal.getFlippedHorizontally() ? -1 : 1);
         }
+    }
+
+    @SuppressWarnings({})
+    private boolean validateFormValues(Double positionX, Double positionY, double animalWidth, double animalHeight) {
+        double upperPositionX = Constant.VIEWSCREEN_WIDTH - animalWidth;
+        double upperPositionY = Constant.VIEWSCREEN_HEIGHT - animalHeight;
+
+        boolean validatePositionX = positionX <= upperPositionX && positionX >= 0;
+        boolean validatePositionY = positionY <= upperPositionY && positionY >= 0;
+
+
+        Alert alert = new Alert(Alert.AlertType.NONE, null, ButtonType.CLOSE);
+        alert.setTitle("Invalid form input");
+
+        double ratio = animalWidth / animalHeight;
+
+        if(animalWidth <= 0){
+            alert.setContentText("Make sure size > 0");
+            alert.show();
+            return false;
+        }
+
+        if(animalWidth > Constant.VIEWSCREEN_WIDTH && animalHeight > Constant.VIEWSCREEN_HEIGHT){
+            if(Constant.VIEWSCREEN_WIDTH <= Constant.VIEWSCREEN_HEIGHT * ratio){
+                alert.setContentText("Make sure size <= %d".formatted(((Double)Constant.VIEWSCREEN_WIDTH).intValue()));
+                alert.show();
+                return false;
+            }else{
+                alert.setContentText("Make sure size <= %d".formatted(((Double)(Constant.VIEWSCREEN_HEIGHT * ratio)).intValue()));
+                alert.show();
+                return false;
+            }
+        }
+
+        if(animalHeight > Constant.VIEWSCREEN_HEIGHT){
+            alert.setContentText("Make sure size <= %d".formatted(((Double)(Constant.VIEWSCREEN_HEIGHT * ratio)).intValue()));
+            alert.show();
+            return false;
+        }
+
+        if(animalWidth > Constant.VIEWSCREEN_WIDTH){
+                alert.setContentText("Make sure size <= %d".formatted(((Double)(Constant.VIEWSCREEN_WIDTH * ratio)).intValue()));
+            alert.show();
+            return false;
+        }
+
+
+        if(validatePositionX && validatePositionY){
+            return true;
+        }else if(!validatePositionX && !validatePositionY){
+            alert.setContentText("Make sure 0 <= X <= %.3f, 0 <= Y <= %.3f".formatted(upperPositionX, upperPositionY));
+            alert.show();
+        }else if(!validatePositionY){
+            alert.setContentText("Make sure 0 <= Y <= %.3f".formatted(upperPositionY));
+            alert.show();
+        }else{
+            alert.setContentText("Make sure 0 <= X <= %.3f".formatted(upperPositionX));
+            alert.show();
+        }
+        return false;
     }
 
     @FXML

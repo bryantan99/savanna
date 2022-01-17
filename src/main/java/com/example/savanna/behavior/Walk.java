@@ -28,20 +28,20 @@ public class Walk implements MoveBehavior{
         String pattern = "[-a-z]+\\.";
 
         Pattern r = Pattern.compile(pattern);
-        try {
+        try{
             Matcher m = r.matcher(url);
-            String animalImage = m.find() ? m.group(0).substring(0, m.group(0).length() - 1) : null;
+            String animalImage = m.find()? m.group(0).substring(0, m.group(0).length() - 1) : null;
 
-            if (animalImage == null) {
+            if(animalImage == null){
                 throw new Exception();
-            } else {
-                if (animalImage.contains("fly")) {
+            }else{
+                if(animalImage.contains("fly")){
                     animalImage = animalImage.replace("-fly", "");
                 }
                 animalImage = animalImage + ".png";
                 imageView.setImage(new Image(Objects.requireNonNull(HelloApplication.class.getResource("images/" + animalImage)).toURI().toString()));
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             System.out.println("No match");
         }
     }
