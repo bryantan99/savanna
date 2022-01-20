@@ -161,7 +161,7 @@ public class MainController implements Initializable {
             animal.setFlippedHorizontally(Constant.BOOLEAN_TRUE.equals(animalIsFlipped.getValue()));
 
             selectedAnimalImageView.setFitWidth(animal.getSize());
-            animal.getMoveBehavior().move(animal.getPositionX(), animal.getPositionY());
+            animal.move();
             selectedAnimalImageView.setScaleX(animal.getFlippedHorizontally() ? -1 : 1);
         }
     }

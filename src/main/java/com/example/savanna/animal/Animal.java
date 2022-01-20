@@ -72,4 +72,8 @@ public class Animal {
     public void setMoveBehavior(MoveBehavior moveBehavior) {
         this.moveBehavior = moveBehavior;
     }
+
+    public void move() {
+        moveBehavior.move(positionX, positionY);
+    }
 }
