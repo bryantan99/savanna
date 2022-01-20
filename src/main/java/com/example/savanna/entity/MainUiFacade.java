@@ -25,20 +25,17 @@ public class MainUiFacade {
     private ComboBox<String> animalDropdown;
     private Button addAnimalButton;
     private ComboBox<String> moveBehaviorDropdown;
-    private AnchorPane viewScreen;
     private AnimalForm animalForm;
 
-    public MainUiFacade(AnchorPane viewScreen, ImageView skyImageView, ImageView landImageView, EnvironmentSingleton env, MediaPlayer mediaPlayer, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton, ComboBox<String> moveBehaviorDropdown, AnimalForm animalForm) {
-        this.viewScreen = viewScreen;
+    public MainUiFacade(ImageView skyImageView, ImageView landImageView, Slider volumeSlider, ComboBox<String> animalDropdown, Button addAnimalButton, ComboBox<String> moveBehaviorDropdown, AnimalForm animalForm) {
         this.skyImageView = skyImageView;
         this.landImageView = landImageView;
-        this.env = env;
-        this.mediaPlayer = mediaPlayer;
         this.volumeSlider = volumeSlider;
         this.animalDropdown = animalDropdown;
         this.addAnimalButton = addAnimalButton;
         this.moveBehaviorDropdown = moveBehaviorDropdown;
         this.animalForm = animalForm;
+        this.env = EnvironmentSingleton.getInstance();
     }
 
     public void init() {

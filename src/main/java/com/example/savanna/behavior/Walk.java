@@ -4,18 +4,15 @@ import com.example.savanna.HelloApplication;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Walk implements MoveBehavior{
-    private Pane container;
     private ImageView imageView;
 
-    public Walk(Pane container, ImageView imageView) {
-        this.container = container;
+    public Walk(ImageView imageView) {
         this.imageView = imageView;
     }
 

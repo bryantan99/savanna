@@ -7,17 +7,27 @@ import java.util.List;
 
 public class DeleteCommand implements Command {
 
-    private Integer animalId;
+    private final Integer animalId;
 
     public DeleteCommand(Integer animalId) {
         this.animalId = animalId;
     }
 
     @Override
-    public void execute() {
+    public Animal execute() {
+        Animal animal = null;
         if (animalId != null) {
             List<Animal> animalList = EnvironmentSingleton.getInstance().getAnimalList();
-            animalList.removeIf(animal -> animal.getAnimalId().equals(animalId));
+            for (Animal a : animalList) {
+                if (a.getAnimalId().equals(animalId)) {
+                    animal = a;
+                    break;
+                }
+            }
+            if (animal != null) {
+                EnvironmentSingleton.getInstance().getAnimalList().remove(animal);
+            }
         }
+        return animal;
     }
 }

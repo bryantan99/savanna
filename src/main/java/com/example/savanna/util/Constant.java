@@ -1,18 +1,24 @@
 package com.example.savanna.util;
 
-import com.example.savanna.animal.AnimalFactory;
 import com.example.savanna.animal.Eagle;
 import com.example.savanna.animal.Sparrow;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Constant {
     public static final String BGM_DEFAULT = "sound.mp3";
     public static final String SKY_DEFAULT = "sky.jpg";
     public static final String LAND_DEFAULT = "land.png";
+
+    public static final String LEOPARD = "leopard";
+    public static final String LION = "lion";
+    public static final String GIRAFFE = "giraffe";
+    public static final String ZEBRA = "zebra";
+    public static final String EAGLE = "eagle";
+    public static final String SPARROW = "sparrow";
+    public static final String OSTRICH = "ostrich";
 
     public static final String IMAGE_EAGLE = "eagle.png";
     public static final String IMAGE_EAGLE_FLY = "eagle-fly.png";
@@ -35,7 +41,7 @@ public class Constant {
 
     public static final List<String> FLYABLE_ANIMAL = Arrays.asList(Sparrow.class.getSimpleName(), Eagle.class.getSimpleName());
 
-    public static final List<String> ANIMAL_LIST = Arrays.asList(AnimalFactory.ZEBRA, AnimalFactory.GIRAFFE, AnimalFactory.LION, AnimalFactory.EAGLE, AnimalFactory.LEOPARD, AnimalFactory.OSTRICH, AnimalFactory.SPARROW);
+    public static final List<String> ANIMAL_LIST = Arrays.asList(ZEBRA, GIRAFFE, LION, EAGLE, LEOPARD, OSTRICH, SPARROW);
     public static final double VIEWSCREEN_WIDTH = 852.0;
     public static final double VIEWSCREEN_HEIGHT = 480.0;
 }

@@ -4,8 +4,11 @@ import com.example.savanna.HelloApplication;
 import com.example.savanna.animal.Animal;
 import com.example.savanna.behavior.Fly;
 import com.example.savanna.behavior.Walk;
+import com.example.savanna.command.AddCommand;
+import com.example.savanna.command.Command;
+import com.example.savanna.command.DeleteCommand;
+import com.example.savanna.command.GetCommand;
 import com.example.savanna.entity.MainUiFacade;
-import com.example.savanna.environment.EnvironmentSingleton;
 import com.example.savanna.model.AnimalForm;
 import com.example.savanna.util.Constant;
 import javafx.embed.swing.SwingFXUtils;
@@ -23,7 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -43,11 +45,9 @@ public class MainController implements Initializable {
 
     private Scene scene;
 
-    private EnvironmentSingleton env;
+    private Command command;
 
     private MainUiFacade mainUiFacade;
-
-    private MediaPlayer mediaPlayer;
 
     @FXML
     private Slider volumeSlider;
@@ -103,9 +103,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        env = EnvironmentSingleton.getInstance();
         animalForm = new AnimalForm(animalId, animalType, animalSize, animalPositionX, animalPositionY, animalMoveBehavior, updateAnimalButton, deleteAnimalButton, animalIsFlipped);
-        mainUiFacade = new MainUiFacade(viewScreen, skyImageView, landImageView, env, mediaPlayer, volumeSlider, animalDropdown, addAnimalButton, animalMoveBehavior, animalForm);
+        mainUiFacade = new MainUiFacade(skyImageView, landImageView, volumeSlider, animalDropdown, addAnimalButton, animalMoveBehavior, animalForm);
         mainUiFacade.init();
     }
 
@@ -121,7 +120,9 @@ public class MainController implements Initializable {
 
     @FXML
     protected void addAnimal(ActionEvent event) throws URISyntaxException {
-        Animal animal = env.addAnimal(animalDropdown.getValue());
+        command = new AddCommand(animalDropdown.getValue());
+        Animal animal = command.execute();
+
         if (animal != null) {
             ImageView animalImageView = new ImageView(new Image(Objects.requireNonNull(HelloApplication.class.getResource("images/" + animal.getImage())).toURI().toString()));
             animalImageView.setPreserveRatio(true);
@@ -130,7 +131,7 @@ public class MainController implements Initializable {
             AnchorPane.setLeftAnchor(animalImageView, animal.getPositionX());
             AnchorPane.setBottomAnchor(animalImageView, animal.getPositionY());
 
-            animal.setMoveBehavior(new Walk(viewScreen, animalImageView));
+            animal.setMoveBehavior(new Walk(animalImageView));
             animalImageView.setOnMouseClicked(event1 -> {
                 MouseButton button = event1.getButton();
                 if (button.equals(MouseButton.PRIMARY)) {
@@ -146,7 +147,8 @@ public class MainController implements Initializable {
 
     @FXML
     protected void updateAnimal(ActionEvent event) {
-        Animal animal = env.getAnimal(Integer.parseInt(animalId.getText()));
+        command = new GetCommand(Integer.parseInt(animalId.getText()));
+        Animal animal = command.execute();
 
         double width_ratio = selectedAnimalImageView.getImage().getWidth() / Double.parseDouble(animalSize.getText());
         boolean isValid = validateFormValues(Double.parseDouble(animalPositionX.getText()), Double.parseDouble(animalPositionY.getText()),
@@ -154,7 +156,7 @@ public class MainController implements Initializable {
         if (animal != null && isValid) {
             animal.setPositionX(Double.parseDouble(animalPositionX.getText()));
             animal.setPositionY(Double.parseDouble(animalPositionY.getText()));
-            animal.setMoveBehavior(Constant.MOVE_BEHAVIOR_FLY.equals(animalMoveBehavior.getValue()) ? new Fly(viewScreen, selectedAnimalImageView) : new Walk(viewScreen, selectedAnimalImageView));
+            animal.setMoveBehavior(Constant.MOVE_BEHAVIOR_FLY.equals(animalMoveBehavior.getValue()) ? new Fly(selectedAnimalImageView) : new Walk(selectedAnimalImageView));
             animal.setSize(Integer.parseInt(animalSize.getText()));
             animal.setFlippedHorizontally(Constant.BOOLEAN_TRUE.equals(animalIsFlipped.getValue()));
 
@@ -178,8 +180,8 @@ public class MainController implements Initializable {
 
         double ratio = animalWidth / animalHeight;
 
-        if(animalWidth <= 0){
-            alert.setContentText("Make sure size > 0");
+        if(animalWidth < 100){
+            alert.setContentText("Make sure size >= 100");
             alert.show();
             return false;
         }
@@ -226,7 +228,9 @@ public class MainController implements Initializable {
 
     @FXML
     protected void deleteAnimal(ActionEvent event) {
-        env.removeAnimal(Integer.parseInt(animalId.getText()));
+        command = new DeleteCommand(Integer.parseInt(animalId.getText()));
+        command.execute();
+
         viewScreen.getChildren().remove(selectedAnimalImageView);
         mainUiFacade.initMoveBehaviorDropdown(null);
         animalForm.reset();

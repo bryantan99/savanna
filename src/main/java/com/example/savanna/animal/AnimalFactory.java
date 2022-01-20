@@ -1,26 +1,20 @@
 package com.example.savanna.animal;
 
-public class AnimalFactory {
+import com.example.savanna.util.Constant;
 
-    public static final String LEOPARD = "leopard";
-    public static final String LION = "lion";
-    public static final String GIRAFFE = "giraffe";
-    public static final String ZEBRA = "zebra";
-    public static final String EAGLE = "eagle";
-    public static final String SPARROW = "sparrow";
-    public static final String OSTRICH = "ostrich";
+public class AnimalFactory {
 
     public static Integer id = 0;
 
     public Animal createAnimal(String type) {
         return switch (type) {
-            case LEOPARD -> new Leopard();
-            case LION -> new Lion();
-            case GIRAFFE -> new Giraffe();
-            case ZEBRA -> new Zebra();
-            case EAGLE -> new Eagle();
-            case SPARROW -> new Sparrow();
-            case OSTRICH -> new Ostrich();
+            case Constant.LEOPARD -> new Leopard();
+            case Constant.LION -> new Lion();
+            case Constant.GIRAFFE -> new Giraffe();
+            case Constant.ZEBRA -> new Zebra();
+            case Constant.EAGLE -> new Eagle();
+            case Constant.SPARROW -> new Sparrow();
+            case Constant.OSTRICH -> new Ostrich();
             default -> null;
         };
     }

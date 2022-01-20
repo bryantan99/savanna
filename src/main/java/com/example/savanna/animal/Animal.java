@@ -1,6 +1,7 @@
 package com.example.savanna.animal;
 
 import com.example.savanna.behavior.MoveBehavior;
+import com.example.savanna.util.Constant;
 
 import java.util.Random;
 
@@ -12,7 +13,6 @@ public class Animal {
     private Double positionX;
     private Double positionY;
     private Boolean isFlippedHorizontally;
-    private Boolean isFly;
     private MoveBehavior moveBehavior;
 
     public Animal(String image, Integer animalId) {
@@ -20,16 +20,13 @@ public class Animal {
         this.animalId = animalId;
         this.size = 150;
         this.image = image;
-        this.positionX = (double) r.nextInt(700);
+        this.positionX = r.nextDouble(Constant.VIEWSCREEN_WIDTH - 150.0);
+        this.positionY = 50.0;
         this.isFlippedHorizontally = false;
     }
 
     public Integer getAnimalId() {
         return animalId;
-    }
-
-    public void setAnimalId(Integer animalId) {
-        this.animalId = animalId;
     }
 
     public Integer getSize() {
@@ -42,10 +39,6 @@ public class Animal {
 
     public String getImage() {
         return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Double getPositionX() {
@@ -64,14 +57,6 @@ public class Animal {
         this.positionY = positionY;
     }
 
-    public Boolean getFly() {
-        return isFly;
-    }
-
-    public void setFly(Boolean fly) {
-        isFly = fly;
-    }
-
     public Boolean getFlippedHorizontally() {
         return isFlippedHorizontally;
     }
@@ -86,15 +71,5 @@ public class Animal {
 
     public void setMoveBehavior(MoveBehavior moveBehavior) {
         this.moveBehavior = moveBehavior;
-    }
-
-    public void adjustPositionYAccordingToIsFly() {
-        Random r = new Random();
-
-        if (isFly) {
-            this.positionY = (double) r.nextInt(350);
-        } else {
-            this.positionY = (double) r.nextInt(160);
-        }
     }
 }
