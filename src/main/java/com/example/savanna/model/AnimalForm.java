@@ -8,6 +8,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class AnimalForm {
 
     private Text animalId;
@@ -19,9 +23,6 @@ public class AnimalForm {
     private ComboBox<String> animalIsFlipped;
     private Button updateButton;
     private Button deleteButton;
-
-    public AnimalForm() {
-    }
 
     public AnimalForm(Text animalId, Text animalType, TextField animalSize, TextField animalPositionX, TextField animalPositionY, ComboBox<String> animalMoveBehavior, Button updateButton, Button deleteButton, ComboBox<String> animalIsFlipped) {
         this.animalId = animalId;
@@ -35,65 +36,9 @@ public class AnimalForm {
         this.deleteButton = deleteButton;
     }
 
-    public Text getAnimalId() {
-        return animalId;
-    }
-
-    public void setAnimalId(Text animalId) {
-        this.animalId = animalId;
-    }
-
-    public Text getAnimalType() {
-        return animalType;
-    }
-
-    public void setAnimalType(Text animalType) {
-        this.animalType = animalType;
-    }
-
-    public TextField getAnimalSize() {
-        return animalSize;
-    }
-
-    public void setAnimalSize(TextField animalSize) {
-        this.animalSize = animalSize;
-    }
-
-    public TextField getAnimalPositionX() {
-        return animalPositionX;
-    }
-
-    public void setAnimalPositionX(TextField animalPositionX) {
-        this.animalPositionX = animalPositionX;
-    }
-
-    public TextField getAnimalPositionY() {
-        return animalPositionY;
-    }
-
-    public void setAnimalPositionY(TextField animalPositionY) {
-        this.animalPositionY = animalPositionY;
-    }
-
-    public ComboBox<String> getAnimalMoveBehavior() {
-        return animalMoveBehavior;
-    }
-
-    public void setAnimalMoveBehavior(ComboBox<String> animalMoveBehavior) {
-        this.animalMoveBehavior = animalMoveBehavior;
-    }
-
-    public ComboBox<String> getAnimalIsFlipped() {
-        return animalIsFlipped;
-    }
-
-    public void setAnimalIsFlipped(ComboBox<String> animalIsFlipped) {
-        this.animalIsFlipped = animalIsFlipped;
-    }
-
     public void init() {
-        animalIsFlipped.getItems().clear();
-        initIsFlippedDropdown();
+        initMoveBehaviorDropdown(null);
+        initIsFlippedDropdown(null);
         animalId.setText(Constant.NA);
         animalType.setText(Constant.NA);
         animalSize.setText(Constant.NA);
@@ -134,8 +79,31 @@ public class AnimalForm {
         }
     }
 
-    private void initIsFlippedDropdown() {
-        animalIsFlipped.getItems().addAll(Constant.BOOLEAN_DROPDOWN_LIST);
+    public void initIsFlippedDropdown(String animalType) {
+        animalIsFlipped.getItems().clear();
+        if (animalType == null || animalType.isEmpty()) {
+            animalIsFlipped.getItems().add(Constant.NA);
+        } else {
+            animalIsFlipped.getItems().addAll(Constant.BOOLEAN_DROPDOWN_LIST);
+        }
+    }
+
+    public void initMoveBehaviorDropdown(String animalType) {
+        this.animalMoveBehavior.getItems().clear();
+        if (animalType == null || animalType.isEmpty()) {
+            this.animalMoveBehavior.getItems().add(Constant.NA);
+            return;
+        }
+
+        List<String> moveBehaviorList = new ArrayList<>();
+        moveBehaviorList.add(Constant.MOVE_BEHAVIOR_WALK);
+        if (Constant.FLYABLE_ANIMAL.contains(animalType)) {
+            moveBehaviorList.add(Constant.MOVE_BEHAVIOR_FLY);
+        }
+        Collections.sort(moveBehaviorList);
+        for (String mb : moveBehaviorList) {
+            this.animalMoveBehavior.getItems().add(mb);
+        }
     }
 
 }

@@ -67,8 +67,6 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> animalDropdown;
 
-    private AnimalForm animalForm;
-
     @FXML
     private Text animalId;
 
@@ -103,8 +101,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        animalForm = new AnimalForm(animalId, animalType, animalSize, animalPositionX, animalPositionY, animalMoveBehavior, updateAnimalButton, deleteAnimalButton, animalIsFlipped);
-        mainUiFacade = new MainUiFacade(skyImageView, landImageView, volumeSlider, animalDropdown, addAnimalButton, animalMoveBehavior, animalForm);
+        AnimalForm animalForm = new AnimalForm(animalId, animalType, animalSize, animalPositionX, animalPositionY, animalMoveBehavior, updateAnimalButton, deleteAnimalButton, animalIsFlipped);
+        mainUiFacade = new MainUiFacade(skyImageView, landImageView, volumeSlider, animalDropdown, addAnimalButton, animalForm);
         mainUiFacade.init();
     }
 
@@ -136,8 +134,7 @@ public class MainController implements Initializable {
                 MouseButton button = event1.getButton();
                 if (button.equals(MouseButton.PRIMARY)) {
                     selectedAnimalImageView = animalImageView;
-                    mainUiFacade.initMoveBehaviorDropdown(animal.getClass().getSimpleName());
-                    animalForm.patchValue(animal);
+                    mainUiFacade.patchAnimalForm(animal);
                 }
             });
         }
@@ -232,8 +229,7 @@ public class MainController implements Initializable {
         command.execute();
 
         viewScreen.getChildren().remove(selectedAnimalImageView);
-        mainUiFacade.initMoveBehaviorDropdown(null);
-        animalForm.reset();
+        mainUiFacade.resetAnimalForm();
     }
 
     @FXML
